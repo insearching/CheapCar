@@ -1,4 +1,4 @@
-package com.auto.cheapcar.entity
+package com.auto.cheapcar.entity.dto
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName

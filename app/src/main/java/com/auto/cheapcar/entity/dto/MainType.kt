@@ -1,9 +1,10 @@
-package com.auto.cheapcar.entity
+package com.auto.cheapcar.entity.dto
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
-data class Manufacturer (
+
+data class MainType (
     @SerializedName("page")
     @Expose
     var page: Int? = null,
@@ -15,5 +16,5 @@ data class Manufacturer (
     var totalPageCount: Int? = null,
     @SerializedName("wkda")
     @Expose
-    var names: Map<Int, String>? = null
+    var types: Map<String, String>? = null
 )
