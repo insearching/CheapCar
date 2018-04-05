@@ -22,6 +22,16 @@ allprojects {
     }
 }
 
+ext {
+    supportLibrary = "27.1.0"
+    constraintLayout = "1.0.2"
+    dagger = "2.12"
+    rx2Java = "2.1.3"
+    rx2Android = "2.0.2"
+    retrofit2 = "2.1.0"
+    okhttp3 = "3.4.1"
+}
+
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
