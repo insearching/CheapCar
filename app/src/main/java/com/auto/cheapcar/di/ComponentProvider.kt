@@ -1,11 +1,7 @@
 package com.auto.cheapcar.di
 
-import com.liftbrands.di.component.ApplicationComponent
+import com.auto.cheapcar.di.component.ApplicationComponent
 
-
-/**
- * @author Ivan Lavryshyn
- */
 
 object ComponentProvider {
 

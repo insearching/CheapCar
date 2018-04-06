@@ -1,4 +1,4 @@
-package com.liftbrands.di.module.android
+package com.auto.cheapcar.di.module.android
 
 import android.content.Context
 import com.auto.cheapcar.di.scope.ApplicationScope

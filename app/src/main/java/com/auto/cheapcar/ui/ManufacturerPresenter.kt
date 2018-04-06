@@ -1,21 +1,20 @@
 package com.auto.cheapcar.ui
 
 import android.util.Log
+import com.auto.cheapcar.CarRepository
 import com.auto.cheapcar.CheapCarApplication
-import com.auto.cheapcar.api.CarsApi
-import com.auto.cheapcar.entity.dto.Manufacturer
+import com.auto.cheapcar.entity.bo.Brand
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-class ManufacturerPresenter @Inject constructor(private val carsApi: CarsApi) :
+class ManufacturerPresenter @Inject constructor(private val carsRepository: CarRepository) :
         BasePresenter<ManufacturerPresenter.View> {
 
     override lateinit var view: View
     private lateinit var disposable: Disposable
     private var page = 0
-    private var manufacturers: Manufacturer? = null
+    private var brands: List<Brand> = emptyList()
 
     override fun bind(view: View) {
         this.view = view
@@ -26,27 +25,31 @@ class ManufacturerPresenter @Inject constructor(private val carsApi: CarsApi) :
         disposable.dispose()
     }
 
+    internal fun onBindRowViewAtPosition(position: Int, rowView: ManufacturerFragment.RowView) {
+        rowView.setTitle(brands[position].title)
+    }
+
+    internal fun getPersonsCount(): Int {
+        return brands.size
+    }
+
     private fun getManufacturers() {
-        disposable = carsApi.getManufacturers(page, CheapCarApplication.PAGE_SIZE,
-                CheapCarApplication.WA_KEY)
-                .subscribeOn(Schedulers.io())
+        disposable = carsRepository.getManufacturers(page, CheapCarApplication.PAGE_SIZE)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ manufacturers ->
-                    updateManufacturer(manufacturers)
-                    Log.d("Manufacturers", manufacturers.titles.toString())
+                .subscribe({ brands ->
+                    updateManufacturer(brands)
+                    Log.d("Manufacturers", brands.toString())
                 }, { error ->
                     Log.e("Manufacturers", "Error", error)
                 })
     }
 
-
-    private fun updateManufacturer(manufacturers: Manufacturer){
-        this.manufacturers = manufacturers
-
+    private fun updateManufacturer(brands: List<Brand>) {
+        this.brands = brands
         view.updateManufacturerList()
     }
 
     interface View : PresentableView<ManufacturerPresenter> {
-        fun updateManufacturerList(data: List<String>)
+        fun updateManufacturerList()
     }
 }

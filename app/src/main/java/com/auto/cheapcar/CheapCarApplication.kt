@@ -1,7 +1,7 @@
 package com.auto.cheapcar
 
 import android.app.Application
-import com.auto.cheapcar.utils.injectDependencies
+import com.auto.cheapcar.utils.dependencies
 
 class CheapCarApplication : Application() {
 
@@ -13,6 +13,6 @@ class CheapCarApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        injectDependencies()
+        dependencies().inject(this)
     }
 }

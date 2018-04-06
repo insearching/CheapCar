@@ -1,8 +1,10 @@
 package com.auto.cheapcar.ui
 
 import android.os.Bundle
+import android.support.v4.app.Fragment
+import com.auto.cheapcar.utils.dependencies
 
-class BuildDateFragment : BaseFragment() {
+class BuildDateFragment : Fragment() {
 
     companion object {
         fun newInstance() =
