@@ -1,4 +1,4 @@
-package com.auto.cheapcar.di.module.network
+package com.auto.cheapcar.di.module.manager
 
 import android.content.Context
 import android.net.ConnectivityManager

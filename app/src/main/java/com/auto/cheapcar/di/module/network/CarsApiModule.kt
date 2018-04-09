@@ -6,7 +6,7 @@ import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit
 
-@Module (includes = arrayOf(RetrofitModule::class))
+@Module(includes = arrayOf(RetrofitModule::class))
 class CarsApiModule {
 
     @Provides

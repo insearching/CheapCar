@@ -13,5 +13,5 @@ class DatabaseModule {
 
     @Provides
     @ApplicationScope
-    fun carDatabase(context: Context) = Room.databaseBuilder(context, AppDatabase::class.java, "cheepcar").build()
+    fun provideDatabase(context: Context) = Room.databaseBuilder(context, AppDatabase::class.java, "cheepcar").build()
 }

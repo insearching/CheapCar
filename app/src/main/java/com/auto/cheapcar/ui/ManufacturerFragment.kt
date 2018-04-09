@@ -1,18 +1,24 @@
 package com.auto.cheapcar.ui
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import android.support.annotation.DrawableRes
+import android.support.design.widget.Snackbar
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.auto.cheapcar.R
+import com.auto.cheapcar.entity.bo.Brand
 import com.auto.cheapcar.ui.ManufacturerFragment.ManufacturersAdapter.ViewHolder
 import com.auto.cheapcar.utils.dependencies
+import com.auto.cheapcar.utils.replaceFragment
+import com.auto.cheapcar.utils.string
+import kotlinx.android.synthetic.main.fragment_list.*
 import javax.inject.Inject
 
-class ManufacturerFragment : Fragment(), ManufacturerPresenter.View {
+class ManufacturerFragment : PaginationFragment(), ManufacturerPresenter.View {
+
     companion object {
         fun newInstance() =
                 ManufacturerFragment().apply {
@@ -23,22 +29,21 @@ class ManufacturerFragment : Fragment(), ManufacturerPresenter.View {
 
     @Inject
     override lateinit var presenter: ManufacturerPresenter
-    lateinit var manufacturersAdapter : ManufacturersAdapter
+    private lateinit var adapter: ManufacturersAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         dependencies().inject(this)
         super.onCreate(savedInstanceState)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? = inflater.inflate(R.layout.fragment_list, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? =
+            inflater.inflate(R.layout.fragment_list, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val recyclerView = view.findViewById<RecyclerView>(R.id.manufacturers_list)
-        manufacturersAdapter = ManufacturersAdapter(presenter)
-        recyclerView.adapter = manufacturersAdapter
-
+        adapter = ManufacturersAdapter(presenter)
+        recyclerView.adapter = adapter
     }
 
     override fun onStart() {
@@ -46,13 +51,39 @@ class ManufacturerFragment : Fragment(), ManufacturerPresenter.View {
         presenter.bind(this)
     }
 
+    override fun onResume() {
+        super.onResume()
+        activity?.title = string(R.string.app_name)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        presenter.unbind()
+    }
+
     override fun updateManufacturerList() {
-        manufacturersAdapter.notifyDataSetChanged()
+        adapter.notifyDataSetChanged()
+    }
+
+    override fun loadMoreItems(visibleItemCount: Int, totalItemCount: Int, firstVisibleItemPosition: Int) {
+        presenter.checkForMoreItems(visibleItemCount, totalItemCount, firstVisibleItemPosition)
+    }
+
+    override fun showNoInternetMessage() {
+        Snackbar.make(coordinatorLayout, R.string.no_internet, Snackbar.LENGTH_LONG).show()
+    }
+
+    override fun selectManufacturer(brand: Brand) {
+        activity?.title = brand.title
+        replaceFragment(MainTypeFragment.newInstance(brand))
+    }
+
+    override fun showLoading(show: Boolean) {
+        showProgress(show)
     }
 
     inner class ManufacturersAdapter internal constructor(private val presenter: ManufacturerPresenter)
         : RecyclerView.Adapter<ViewHolder>() {
-
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
             return ViewHolder(LayoutInflater.from(parent.context)
@@ -68,7 +99,7 @@ class ManufacturerFragment : Fragment(), ManufacturerPresenter.View {
         }
 
         override fun getItemCount(): Int {
-            return presenter.getPersonsCount()
+            return presenter.getManufacturersCount()
         }
 
         inner class ViewHolder(view: android.view.View) : RecyclerView.ViewHolder(view), RowView {
@@ -78,11 +109,22 @@ class ManufacturerFragment : Fragment(), ManufacturerPresenter.View {
             override fun setTitle(name: String) {
                 titleTv.text = name
             }
-        }
 
+            override fun setBackground(color: Int) {
+                itemView.setBackgroundResource(color)
+            }
+
+            override fun setOnItemClickListener(listener: View.OnClickListener) {
+                itemView.setOnClickListener(listener)
+            }
+        }
     }
 
     interface RowView {
         fun setTitle(name: String)
+
+        fun setBackground(@DrawableRes color: Int)
+
+        fun setOnItemClickListener(listener: View.OnClickListener)
     }
 }

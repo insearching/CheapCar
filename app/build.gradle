@@ -4,13 +4,16 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 def ext = rootProject.ext
+androidExtensions {
+    experimental = true
+}
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion ext.compileSdk
     defaultConfig {
         applicationId "com.auto.cheapcar"
-        minSdkVersion 16
-        targetSdkVersion 27
+        minSdkVersion ext.minSdk
+        targetSdkVersion ext.targetSdk
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -28,6 +31,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     implementation "com.android.support:appcompat-v7:$ext.supportLibrary"
     implementation "com.android.support.constraint:constraint-layout:$ext.constraintLayout"
+    implementation "com.android.support:design:$ext.supportLibrary"
     implementation "com.google.dagger:dagger:$ext.dagger"
     kapt "com.google.dagger:dagger-compiler:$ext.dagger"
     provided 'org.glassfish:javax.annotation:10.0-b28'

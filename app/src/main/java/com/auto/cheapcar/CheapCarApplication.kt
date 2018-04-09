@@ -7,7 +7,7 @@ class CheapCarApplication : Application() {
 
     companion object {
         const val WA_KEY = "coding-puzzle-client-449cc9d"
-        const val PAGE_SIZE = 10
+        const val PAGE_SIZE = 15
     }
 
     override fun onCreate() {

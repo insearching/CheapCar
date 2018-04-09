@@ -8,7 +8,7 @@ import dagger.Provides
 @Module(includes = arrayOf(ContextModule::class))
 class SharedPreferenceModule {
 
-    @ApplicationScope
     @Provides
+    @ApplicationScope
     fun sharedPreferences(context: Context) = context.getSharedPreferences("personal", Context.MODE_PRIVATE)!!
 }

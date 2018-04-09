@@ -23,7 +23,11 @@ allprojects {
 }
 
 ext {
-    supportLibrary = "27.0.2"
+    compileSdk = 27
+    minSdk = 16
+    targetSdk = 27
+
+    supportLibrary = "27.1.0"
     constraintLayout = "1.0.2"
     dagger = "2.10"
     rx2Java = "2.1.3"

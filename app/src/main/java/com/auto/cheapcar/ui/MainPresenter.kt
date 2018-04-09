@@ -2,7 +2,7 @@ package com.auto.cheapcar.ui
 
 import javax.inject.Inject
 
-class MainPresenter @Inject constructor(): BasePresenter<MainPresenter.View>{
+class MainPresenter @Inject constructor() : BasePresenter<MainPresenter.View> {
 
     override lateinit var view: MainPresenter.View
 
@@ -14,7 +14,7 @@ class MainPresenter @Inject constructor(): BasePresenter<MainPresenter.View>{
     override fun unbind() {
     }
 
-    interface View : PresentableView<MainPresenter>{
+    interface View : PresentableView<MainPresenter> {
         fun switchToManufacturerScreen()
     }
 }

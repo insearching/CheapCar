@@ -11,6 +11,8 @@ import dagger.Component
 @Component(dependencies = arrayOf(ApplicationComponent::class))
 interface FragmentComponent {
     fun inject(manufacturerFragment: ManufacturerFragment)
+
     fun inject(mainTypeFragment: MainTypeFragment)
+
     fun inject(buildDateFragment: BuildDateFragment)
 }
