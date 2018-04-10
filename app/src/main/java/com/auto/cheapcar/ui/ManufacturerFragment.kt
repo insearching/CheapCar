@@ -2,7 +2,6 @@ package com.auto.cheapcar.ui
 
 import android.os.Bundle
 import android.support.annotation.DrawableRes
-import android.support.design.widget.Snackbar
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -14,7 +13,6 @@ import com.auto.cheapcar.ui.ManufacturerFragment.ManufacturersAdapter.ViewHolder
 import com.auto.cheapcar.utils.dependencies
 import com.auto.cheapcar.utils.replaceFragment
 import com.auto.cheapcar.utils.string
-import kotlinx.android.synthetic.main.fragment_list.*
 import javax.inject.Inject
 
 class ManufacturerFragment : PaginationFragment(), ManufacturerPresenter.View {
@@ -70,7 +68,7 @@ class ManufacturerFragment : PaginationFragment(), ManufacturerPresenter.View {
     }
 
     override fun showNoInternetMessage() {
-        Snackbar.make(coordinatorLayout, R.string.no_internet, Snackbar.LENGTH_LONG).show()
+        displayNoInternetMessage()
     }
 
     override fun selectManufacturer(brand: Brand) {

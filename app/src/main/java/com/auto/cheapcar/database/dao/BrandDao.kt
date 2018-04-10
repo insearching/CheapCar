@@ -10,7 +10,7 @@ interface BrandDao {
     @get:Query("SELECT * FROM `brand`")
     val brands: Single<List<Brand>>
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addBrands(brands: List<Brand>)
 
     @Transaction

@@ -1,7 +1,7 @@
 package com.auto.cheapcar
 
 import android.content.SharedPreferences
-import com.auto.cheapcar.api.CarsApi
+import com.auto.cheapcar.api.CarsApiMock
 import com.auto.cheapcar.database.AppDatabase
 import com.auto.cheapcar.entity.bo.Brand
 import com.auto.cheapcar.entity.bo.Date
@@ -12,7 +12,7 @@ import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class CarRepository @Inject constructor(private val prefs: SharedPreferences,
-                                        private val carsApi: CarsApi,
+                                        private val carsApi: CarsApiMock,
                                         private val carsDatabase: AppDatabase) {
 
     companion object {
@@ -125,5 +125,5 @@ class CarRepository @Inject constructor(private val prefs: SharedPreferences,
             carsDatabase.buildDateDao.getDatesForMainType(manufacturerId, typeId).subscribeOn(Schedulers.io())
 
     internal fun getMainTypeIdByTitle(manufacturerId: Int, typeTitle: String) : Single<Type> =
-            carsDatabase.mainTypeDao.getTypeByTitle(manufacturerId, typeTitle)
+            carsDatabase.mainTypeDao.getTypeByTitle(manufacturerId, typeTitle).subscribeOn(Schedulers.io())
 }

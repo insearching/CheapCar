@@ -2,7 +2,6 @@ package com.auto.cheapcar.ui
 
 import android.os.Bundle
 import android.support.annotation.DrawableRes
-import android.support.design.widget.Snackbar
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -77,7 +76,7 @@ class MainTypeFragment : PaginationFragment(), MainTypePresenter.View {
     }
 
     override fun showNoInternetMessage() {
-        Snackbar.make(coordinatorLayout, R.string.no_internet, Snackbar.LENGTH_LONG).show()
+        displayNoInternetMessage()
     }
 
     override fun selectMainType(brand: Brand, mainType: Type) {

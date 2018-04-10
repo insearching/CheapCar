@@ -1,15 +1,18 @@
 package com.auto.cheapcar.ui
 
 
+import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Parcelable
+import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.auto.cheapcar.R
+import com.auto.cheapcar.utils.setTextColor
 import kotlinx.android.synthetic.main.fragment_list.*
 
 abstract class BaseFragment : Fragment() {
@@ -44,5 +47,10 @@ abstract class BaseFragment : Fragment() {
     protected fun showProgress(show: Boolean){
         recyclerView.visibility = if(show) View.GONE else View.VISIBLE
         progress.visibility = if(show) View.VISIBLE else View.GONE
+    }
+
+    protected fun displayNoInternetMessage() {
+        Snackbar.make(coordinatorLayout, R.string.no_internet, Snackbar.LENGTH_LONG)
+                .setTextColor(Color.RED).show()
     }
 }
