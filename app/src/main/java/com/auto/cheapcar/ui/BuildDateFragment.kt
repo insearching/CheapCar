@@ -64,6 +64,10 @@ class BuildDateFragment : BaseFragment(), BuildDatePresenter.View {
         displayNoInternetMessage()
     }
 
+    override fun showLoading(show: Boolean) {
+        showProgress(show)
+    }
+
     override fun updateDates() {
         adapter.notifyDataSetChanged()
     }

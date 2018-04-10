@@ -15,8 +15,6 @@ import com.auto.cheapcar.di.ComponentProvider
 import com.auto.cheapcar.di.component.DaggerActivityComponent
 
 
-
-
 fun AppCompatActivity.replaceFragmentInActivity(fragment: Fragment) {
     supportFragmentManager.transact {
         replace(R.id.content, fragment)
@@ -45,7 +43,14 @@ fun AppCompatActivity.requestPermissions(vararg permissions: String) {
 fun Snackbar.setTextColor(color: Int): Snackbar {
     val tv = view.findViewById<TextView>(android.support.design.R.id.snackbar_text)
     tv.setTextColor(color)
-    val face = Typeface.create("sans-serif-medium",Typeface.NORMAL)
+    val face = Typeface.create("sans-serif-medium", Typeface.NORMAL)
+    tv.typeface = face
+    return this
+}
+
+fun Snackbar.setTypeface(fontFamily: String): Snackbar {
+    val tv = view.findViewById<TextView>(android.support.design.R.id.snackbar_text)
+    val face = Typeface.create(fontFamily, Typeface.NORMAL)
     tv.typeface = face
     return this
 }

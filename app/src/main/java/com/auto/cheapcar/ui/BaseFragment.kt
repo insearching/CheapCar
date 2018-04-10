@@ -13,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.auto.cheapcar.R
 import com.auto.cheapcar.utils.setTextColor
+import com.auto.cheapcar.utils.setTypeface
 import kotlinx.android.synthetic.main.fragment_list.*
 
 abstract class BaseFragment : Fragment() {
@@ -51,6 +52,8 @@ abstract class BaseFragment : Fragment() {
 
     protected fun displayNoInternetMessage() {
         Snackbar.make(coordinatorLayout, R.string.no_internet, Snackbar.LENGTH_LONG)
-                .setTextColor(Color.RED).show()
+                .setTextColor(Color.RED)
+                .setTypeface("sans-serif-medium")
+                .show()
     }
 }

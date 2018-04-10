@@ -1,6 +1,6 @@
 package com.auto.cheapcar.di.module.network
 
-import com.auto.cheapcar.api.CarsApiMock
+import com.auto.cheapcar.api.CarsApi
 import com.auto.cheapcar.di.scope.ApplicationScope
 import dagger.Module
 import dagger.Provides
@@ -12,6 +12,6 @@ class CarsApiModule {
     @Provides
     @ApplicationScope
     fun carsApi(retrofit: Retrofit) =
-//            retrofit.create<CarsApiMock>(CarsApiMock::class.java) as CarsApiMock
-    CarsApiMock()
+            retrofit.create<CarsApi>(CarsApi::class.java) as CarsApi
+//    CarsApiMock()
 }

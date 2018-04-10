@@ -6,11 +6,13 @@ import com.auto.cheapcar.R
 import com.auto.cheapcar.entity.bo.Brand
 import com.auto.cheapcar.entity.bo.Date
 import com.auto.cheapcar.entity.bo.Type
+import com.auto.cheapcar.utils.manager.InternetManager
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import javax.inject.Inject
 
-class BuildDatePresenter @Inject constructor(private val carsRepository: CarRepository) :
+class BuildDatePresenter @Inject constructor(private val carsRepository: CarRepository,
+                                             private val internetManager: InternetManager) :
         BasePresenter<BuildDatePresenter.View> {
 
     override lateinit var view: View
@@ -49,6 +51,10 @@ class BuildDatePresenter @Inject constructor(private val carsRepository: CarRepo
     private fun loadData() {
         disposable = carsRepository.getBuildDates(brand.id, mainType)
                 .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe({ if (!internetManager.connectionAvailable()) view.showNoInternetMessage() })
+                .doOnSubscribe({ view.showLoading(true) })
+                .doOnNext({ view.showLoading(false) })
+                .doOnError({ view.showLoading(false) })
                 .subscribe({ dates ->
                     updateDates(dates)
                 }, { error ->
@@ -67,5 +73,7 @@ class BuildDatePresenter @Inject constructor(private val carsRepository: CarRepo
         fun updateDates()
 
         fun selectBuildDate(brand: String, type: String, date: String)
+
+        fun showLoading(show: Boolean)
     }
 }

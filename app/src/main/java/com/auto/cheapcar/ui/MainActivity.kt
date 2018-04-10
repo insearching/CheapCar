@@ -30,6 +30,7 @@ class MainActivity : AppCompatActivity(), MainPresenter.View {
         }
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         toolbar.setNavigationOnClickListener {
             onBackPressed()
         }

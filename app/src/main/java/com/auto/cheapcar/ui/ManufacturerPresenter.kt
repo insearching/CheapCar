@@ -29,7 +29,7 @@ class ManufacturerPresenter @Inject constructor(private val carsRepository: CarR
         disposable.dispose()
     }
 
-    internal fun onBindRowViewAtPosition(position: Int, rowView: ManufacturerFragment.RowView) {
+    fun onBindRowViewAtPosition(position: Int, rowView: ManufacturerFragment.RowView) {
         rowView.setTitle(brands[position].title)
         rowView.setBackground(if (position % 2 == 0) R.drawable.list_item_clicked_light else R
                 .drawable.list_item_clicked_dark)
@@ -38,9 +38,9 @@ class ManufacturerPresenter @Inject constructor(private val carsRepository: CarR
         })
     }
 
-    internal fun getManufacturersCount() = brands.size
+    fun getManufacturersCount() = brands.size
 
-    internal fun checkForMoreItems(visibleItemCount: Int, totalItemCount: Int,
+    fun checkForMoreItems(visibleItemCount: Int, totalItemCount: Int,
                                    firstVisibleItemPosition: Int) {
         val pageCount = prefs.getInt(CarRepository.MANUFACTURER_PAGE_COUNT, 0)
         if (!carsRepository.isLoading && pagesLoaded() < pageCount) {
@@ -58,7 +58,7 @@ class ManufacturerPresenter @Inject constructor(private val carsRepository: CarR
         disposable = carsRepository.getManufacturers(pagesLoaded(), CheapCarApplication.PAGE_SIZE)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe({ if (!internetManager.connectionAvailable()) view.showNoInternetMessage() })
-                .doOnSubscribe({ if(brands.isEmpty()) view.showLoading(true) })
+                .doOnSubscribe({ view.showLoading(true) })
                 .doOnNext({ view.showLoading(false) })
                 .doOnError({ view.showLoading(false) })
                 .subscribe({ brands ->
