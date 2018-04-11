@@ -25,17 +25,12 @@ class MainActivity : AppCompatActivity(), MainPresenter.View {
         setContentView(R.layout.activity_main)
         requestPermissions(Manifest.permission.INTERNET, Manifest.permission.ACCESS_NETWORK_STATE)
 
-        with(findViewById<Toolbar>(R.id.toolbar)){
-
-        }
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         toolbar.setNavigationOnClickListener {
             onBackPressed()
         }
-
-        fragmentManager.addOnBackStackChangedListener {
+        supportFragmentManager.addOnBackStackChangedListener {
             supportActionBar?.setDisplayHomeAsUpEnabled(supportFragmentManager.backStackEntryCount > 1)
         }
     }

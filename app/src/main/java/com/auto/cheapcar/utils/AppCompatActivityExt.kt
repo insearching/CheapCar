@@ -18,6 +18,7 @@ import com.auto.cheapcar.di.component.DaggerActivityComponent
 fun AppCompatActivity.replaceFragmentInActivity(fragment: Fragment) {
     supportFragmentManager.transact {
         replace(R.id.content, fragment)
+        addToBackStack(fragment::class.toString())
     }
 }
 

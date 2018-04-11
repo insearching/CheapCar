@@ -28,7 +28,7 @@ class CarRepository @Inject constructor(private val prefs: SharedPreferences,
 
     fun getManufacturers(page: Int, pageSize: Int): Flowable<List<Brand>> =
             Flowable.merge(requestManufacturersFromApi(page, pageSize),
-                    getBrandsFromDb().toFlowable().filter({ it.isNotEmpty() }))
+                    getBrandsFromDb().toFlowable())
                     .subscribeOn(Schedulers.io())
 
     private fun requestManufacturersFromApi(page: Int, pageSize: Int): Flowable<List<Brand>> =
@@ -60,7 +60,7 @@ class CarRepository @Inject constructor(private val prefs: SharedPreferences,
 
     fun getMainTypes(manufacturerId: Int, page: Int, pageSize: Int): Flowable<List<Type>> =
             Flowable.merge(requestMainTypesFromApi(manufacturerId, page, pageSize),
-                    getMainTypesFromDb(manufacturerId).toFlowable().filter({ it.isNotEmpty() }))
+                    getMainTypesFromDb(manufacturerId).toFlowable())
                     .subscribeOn(Schedulers.io())
 
     private fun requestMainTypesFromApi(manufacturerId: Int, page: Int,
@@ -93,7 +93,7 @@ class CarRepository @Inject constructor(private val prefs: SharedPreferences,
 
     fun getBuildDates(manufacturerId: Int, mainType: Type): Flowable<List<Date>> =
             Flowable.merge(requestBuildDates(manufacturerId, mainType),
-                    getBuildDatesFromDb(manufacturerId, mainType.id).toFlowable().filter({ it.isNotEmpty() }))
+                    getBuildDatesFromDb(manufacturerId, mainType.id).toFlowable())
                     .subscribeOn(Schedulers.io())
 
     private fun requestBuildDates(manufacturerId: Int,
