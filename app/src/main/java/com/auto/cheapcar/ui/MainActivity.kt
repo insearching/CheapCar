@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity(), MainPresenter.View {
             onBackPressed()
         }
         supportFragmentManager.addOnBackStackChangedListener {
-            supportActionBar?.setDisplayHomeAsUpEnabled(supportFragmentManager.backStackEntryCount > 1)
+            supportActionBar?.setDisplayHomeAsUpEnabled(supportFragmentManager.backStackEntryCount > 0)
         }
     }
 

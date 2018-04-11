@@ -45,9 +45,15 @@ abstract class BaseFragment : Fragment() {
         outState.putParcelable(BUNDLE_RECYCLER_LAYOUT, recyclerView.layoutManager.onSaveInstanceState())
     }
 
-    protected fun showProgress(show: Boolean){
+    protected fun displayProgress(show: Boolean){
         recyclerView.visibility = if(show) View.GONE else View.VISIBLE
         progress.visibility = if(show) View.VISIBLE else View.GONE
+    }
+
+    protected fun displayNoDataMessage() {
+        progress.visibility = View.GONE
+        recyclerView.visibility = View.GONE
+        empty_tv.visibility = View.VISIBLE
     }
 
     protected fun displayNoInternetMessage() {

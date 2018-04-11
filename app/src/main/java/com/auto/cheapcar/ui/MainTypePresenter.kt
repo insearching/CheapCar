@@ -19,7 +19,6 @@ class MainTypePresenter @Inject constructor(private val carsRepository: CarRepos
 
     override lateinit var view: View
     private lateinit var disposable: Disposable
-    private var page = 0
     private var types: List<Type> = emptyList()
     private lateinit var brand: Brand
 
@@ -55,8 +54,8 @@ class MainTypePresenter @Inject constructor(private val carsRepository: CarRepos
 
     internal fun checkForMoreItems(visibleItemCount: Int, totalItemCount: Int,
                                    firstVisibleItemPosition: Int) {
-        val pageCount = prefs.getInt(CarRepository.MANUFACTURER_PAGE_COUNT, 0)
-        if (!carsRepository.isLoading && page <= pageCount) {
+        val totalPageCount = prefs.getInt(CarRepository.MAIN_TYPE_PAGE_COUNT, 0)
+        if (!carsRepository.isLoading && pagesLoaded() < totalPageCount) {
             if (visibleItemCount + firstVisibleItemPosition >= totalItemCount
                     && firstVisibleItemPosition >= 0
                     && totalItemCount >= CheapCarApplication.PAGE_SIZE) {
@@ -66,15 +65,13 @@ class MainTypePresenter @Inject constructor(private val carsRepository: CarRepos
     }
 
     private fun loadData() {
-        disposable = carsRepository.getMainTypes(brand.id, page, CheapCarApplication.PAGE_SIZE)
+        disposable = carsRepository.getMainTypes(brand.id, pagesLoaded(), CheapCarApplication.PAGE_SIZE)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe({ if (!internetManager.connectionAvailable()) view.showNoInternetMessage() })
-                .doOnSubscribe({ if(types.isEmpty()) view.showLoading(true) })
+                .doOnSubscribe({ view.showLoading(true) })
                 .doOnNext({ view.showLoading(false) })
                 .doOnError({ view.showLoading(false) })
                 .subscribe({ types ->
-                    if (types.isNotEmpty())
-                        page++
                     updateTypes(types)
                 }, { error ->
                     Log.e("MainType", "Error", error)
@@ -89,6 +86,8 @@ class MainTypePresenter @Inject constructor(private val carsRepository: CarRepos
             view.showNoDataMessage()
         }
     }
+
+    private fun pagesLoaded() = prefs.getInt(CarRepository.MAIN_TYPE_PAGE_LOADED, 0)
 
     interface View : PresentableView<MainTypePresenter> {
         fun updateTypes()

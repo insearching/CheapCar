@@ -8,7 +8,6 @@ import com.auto.cheapcar.entity.bo.Date
 import com.auto.cheapcar.entity.bo.Type
 import io.reactivex.Completable
 import io.reactivex.Flowable
-import io.reactivex.Maybe
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
@@ -28,7 +27,7 @@ class CarRepository @Inject constructor(private val prefs: SharedPreferences,
 
     fun getManufacturers(page: Int, pageSize: Int): Flowable<List<Brand>> =
             Flowable.merge(requestManufacturersFromApi(page, pageSize),
-                    getBrandsFromDb().toFlowable())
+                    getBrandsFromDb().filter { it.isNotEmpty() }.toFlowable())
                     .subscribeOn(Schedulers.io())
 
     private fun requestManufacturersFromApi(page: Int, pageSize: Int): Flowable<List<Brand>> =
@@ -52,15 +51,15 @@ class CarRepository @Inject constructor(private val prefs: SharedPreferences,
                     }
                     .andThen(getBrandsFromDb())
                     .toFlowable()
+
                     .subscribeOn(Schedulers.newThread())
 
-    private fun getBrandsFromDb(): Maybe<List<Brand>> =
-            carsDatabase.brandDao.brands
-                    .subscribeOn(Schedulers.io())
+    private fun getBrandsFromDb(): Single<List<Brand>> =
+            carsDatabase.brandDao.brands.subscribeOn(Schedulers.io())
 
     fun getMainTypes(manufacturerId: Int, page: Int, pageSize: Int): Flowable<List<Type>> =
             Flowable.merge(requestMainTypesFromApi(manufacturerId, page, pageSize),
-                    getMainTypesFromDb(manufacturerId).toFlowable())
+                    getMainTypesFromDb(manufacturerId).filter { it.isNotEmpty() }.toFlowable())
                     .subscribeOn(Schedulers.io())
 
     private fun requestMainTypesFromApi(manufacturerId: Int, page: Int,
@@ -87,13 +86,12 @@ class CarRepository @Inject constructor(private val prefs: SharedPreferences,
                     .toFlowable()
                     .subscribeOn(Schedulers.newThread())
 
-    private fun getMainTypesFromDb(manufacturerId: Int): Maybe<List<Type>> =
-            carsDatabase.mainTypeDao.getTypesForManufacturer(manufacturerId)
-                    .subscribeOn(Schedulers.io())
+    private fun getMainTypesFromDb(manufacturerId: Int): Single<List<Type>> =
+            carsDatabase.mainTypeDao.getTypesForManufacturer(manufacturerId).subscribeOn(Schedulers.io())
 
     fun getBuildDates(manufacturerId: Int, mainType: Type): Flowable<List<Date>> =
             Flowable.merge(requestBuildDates(manufacturerId, mainType),
-                    getBuildDatesFromDb(manufacturerId, mainType.id).toFlowable())
+                    getBuildDatesFromDb(manufacturerId, mainType.id).filter { it.isNotEmpty() }.toFlowable())
                     .subscribeOn(Schedulers.io())
 
     private fun requestBuildDates(manufacturerId: Int,
@@ -115,7 +113,7 @@ class CarRepository @Inject constructor(private val prefs: SharedPreferences,
                 .subscribeOn(Schedulers.newThread())
     }
 
-    private fun getBuildDatesFromDb(manufacturerId: Int, typeId: Int): Maybe<List<Date>> =
+    private fun getBuildDatesFromDb(manufacturerId: Int, typeId: Int): Single<List<Date>> =
             carsDatabase.buildDateDao.getDatesForMainType(manufacturerId, typeId).subscribeOn(Schedulers.io())
 
     fun getMainTypeIdByTitle(manufacturerId: Int, typeTitle: String): Single<Type> =

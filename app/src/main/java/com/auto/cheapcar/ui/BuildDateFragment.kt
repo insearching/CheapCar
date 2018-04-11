@@ -65,7 +65,11 @@ class BuildDateFragment : BaseFragment(), BuildDatePresenter.View {
     }
 
     override fun showLoading(show: Boolean) {
-        showProgress(show)
+        displayProgress(show)
+    }
+
+    override fun showNoDataMessage() {
+        displayNoDataMessage()
     }
 
     override fun updateDates() {

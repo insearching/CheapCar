@@ -64,7 +64,11 @@ class BuildDatePresenter @Inject constructor(private val carsRepository: CarRepo
 
     private fun updateDates(dates: List<Date>) {
         this.dates = dates
-        view.updateDates()
+        if(dates.isNotEmpty()) {
+            view.updateDates()
+        } else {
+            view.showNoDataMessage()
+        }
     }
 
     interface View : PresentableView<BuildDatePresenter> {
@@ -75,5 +79,7 @@ class BuildDatePresenter @Inject constructor(private val carsRepository: CarRepo
         fun selectBuildDate(brand: String, type: String, date: String)
 
         fun showLoading(show: Boolean)
+
+        fun showNoDataMessage()
     }
 }

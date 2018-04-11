@@ -27,7 +27,7 @@ ext {
     minSdk = 16
     targetSdk = 27
 
-    supportLibrary = "27.1.0"
+    supportLibrary = "27.1.1"
     constraintLayout = "1.0.2"
     dagger = "2.10"
     rx2Java = "2.1.3"

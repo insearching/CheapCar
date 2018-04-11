@@ -5,13 +5,13 @@ import android.arch.persistence.room.Insert
 import android.arch.persistence.room.OnConflictStrategy
 import android.arch.persistence.room.Query
 import com.auto.cheapcar.entity.bo.Date
-import io.reactivex.Maybe
+import io.reactivex.Single
 
 @Dao
 interface BuildDateDao {
 
     @Query("SELECT * FROM `date` WHERE manufacturerId=(:manufacturerId) AND typeId=(:typeId)")
-    fun getDatesForMainType(manufacturerId: Int, typeId: Int): Maybe<List<Date>>
+    fun getDatesForMainType(manufacturerId: Int, typeId: Int): Single<List<Date>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun addBuildDates(dates: List<Date>)

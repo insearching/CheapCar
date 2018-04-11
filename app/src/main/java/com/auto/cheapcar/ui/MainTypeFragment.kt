@@ -85,7 +85,7 @@ class MainTypeFragment : PaginationFragment(), MainTypePresenter.View {
     }
 
     override fun showLoading(show: Boolean) {
-        showProgress(show)
+        displayProgress(show)
     }
 
     override fun loadMoreItems(visibleItemCount: Int, totalItemCount: Int, firstVisibleItemPosition: Int) {

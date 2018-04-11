@@ -17,8 +17,22 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        buildConfigField "boolean", "SIMULATION", "false"
     }
+
+
     buildTypes {
+        debug {
+            debuggable true
+            minifyEnabled false
+        }
+
+        simulation {
+            initWith(buildTypes.debug)
+            buildConfigField "boolean", "SIMULATION", "true"
+        }
+
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'

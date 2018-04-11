@@ -77,7 +77,11 @@ class ManufacturerFragment : PaginationFragment(), ManufacturerPresenter.View {
     }
 
     override fun showLoading(show: Boolean) {
-        showProgress(show)
+        displayProgress(show)
+    }
+
+    override fun showNoDataMessage() {
+        displayNoDataMessage()
     }
 
     inner class ManufacturersAdapter internal constructor(private val presenter: ManufacturerPresenter)

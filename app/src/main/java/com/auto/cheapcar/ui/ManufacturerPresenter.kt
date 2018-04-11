@@ -41,9 +41,9 @@ class ManufacturerPresenter @Inject constructor(private val carsRepository: CarR
     fun getManufacturersCount() = brands.size
 
     fun checkForMoreItems(visibleItemCount: Int, totalItemCount: Int,
-                                   firstVisibleItemPosition: Int) {
-        val pageCount = prefs.getInt(CarRepository.MANUFACTURER_PAGE_COUNT, 0)
-        if (!carsRepository.isLoading && pagesLoaded() < pageCount) {
+                          firstVisibleItemPosition: Int) {
+        val totalPageCount = prefs.getInt(CarRepository.MANUFACTURER_PAGE_COUNT, 0)
+        if (!carsRepository.isLoading && pagesLoaded() < totalPageCount) {
             if (visibleItemCount + firstVisibleItemPosition >= totalItemCount
                     && firstVisibleItemPosition >= 0
                     && totalItemCount >= CheapCarApplication.PAGE_SIZE) {
@@ -52,15 +52,13 @@ class ManufacturerPresenter @Inject constructor(private val carsRepository: CarR
         }
     }
 
-    private fun pagesLoaded() = prefs.getInt(CarRepository.MANUFACTURER_PAGE_LOADED, 0)
-
     private fun loadManufacturers() {
         disposable = carsRepository.getManufacturers(pagesLoaded(), CheapCarApplication.PAGE_SIZE)
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe({ if (!internetManager.connectionAvailable()) view.showNoInternetMessage() })
-                .doOnSubscribe({ view.showLoading(true) })
-                .doOnNext({ view.showLoading(false) })
-                .doOnError({ view.showLoading(false) })
+                .doOnSubscribe { if (!internetManager.connectionAvailable()) view.showNoInternetMessage() }
+                .doOnSubscribe { view.showLoading(true) }
+                .doOnError { view.showLoading(false) }
+                .doOnNext { view.showLoading(false) }
                 .subscribe({ brands ->
                     updateManufacturer(brands)
                 }, { error ->
@@ -68,9 +66,16 @@ class ManufacturerPresenter @Inject constructor(private val carsRepository: CarR
                 })
     }
 
+    private fun pagesLoaded() = prefs.getInt(CarRepository.MANUFACTURER_PAGE_LOADED, 0)
+
     private fun updateManufacturer(brands: List<Brand>) {
         this.brands = brands
         view.updateManufacturerList()
+        if(brands.isNotEmpty()) {
+            view.updateManufacturerList()
+        } else {
+            view.showNoDataMessage()
+        }
     }
 
     interface View : PresentableView<ManufacturerPresenter> {
@@ -81,5 +86,7 @@ class ManufacturerPresenter @Inject constructor(private val carsRepository: CarR
         fun selectManufacturer(brand: Brand)
 
         fun showLoading(show: Boolean)
+
+        fun showNoDataMessage()
     }
 }
